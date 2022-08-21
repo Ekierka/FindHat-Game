@@ -10,6 +10,10 @@ class Field {
     this._hatCoordinates = this._findCoordinates(hat);
   }
 
+  getSomething() {
+    return "something";
+  }
+
   print() {
     for (let i = 0; i < this._fieldArray.length; i++) {
       console.log(`${this._fieldArray[i].join("")}`);
@@ -82,6 +86,70 @@ class Field {
           };
         }
       }
+    }
+  }
+
+  static generateField (length, width, percentage) {
+    
+    let newField = new Array(length);
+    for (let i = 0; i < newField.length; i++) {
+        newField[i] = new Array(width);
+    }
+
+    for (let i = 0; i < newField.length; i++) {
+      for (let j = 0; j < newField[i].length; j++) {
+        newField[i][j] = fieldCharacter;
+      }
+    }
+
+    Field._generateHoles(newField, percentage);
+    Field._generateHat(newField)
+    Field._generatePlayerStart(newField)
+   
+    return newField;
+  }
+
+  static _generateHoles(field, percentage) {
+    let length = field.length;
+    let width = field[0].length;
+    let numberOfHoles = Math.floor(percentage/100*(length*width));
+    for (let i = 0; i < numberOfHoles; i++) {
+      let newHole = Field._generateCoordinates(width, length);
+      if (field[newHole.y][newHole.x] !== hole) {
+        field[newHole.y][newHole.x] = hole;
+      } else {
+        i--;
+      }
+    }
+    return field;
+  }
+
+  static _generateHat(field) {
+    let length = field.length;
+    let width = field[0].length;
+    let newHat = Field._generateCoordinates(width, length)
+    while (field[newHat.y][newHat.x] !== fieldCharacter){
+      newHat = Field._generateCoordinates(width, length)
+    } 
+    return field[newHat.y][newHat.x] = hat;
+  }
+
+  static _generatePlayerStart(field) {
+    let length = field.length;
+    let width = field[0].length;
+    let start = Field._generateCoordinates(width, length)
+    while (field[start.y][start.x] !== fieldCharacter){
+      start = Field._generateCoordinates(width, length)
+    } 
+    return field[start.y][start.x] = pathCharacter;
+  }
+
+  static _generateCoordinates(width, length) {
+    let x = Math.floor(Math.random() * width);
+    let y = Math.floor(Math.random() * length);
+    return {
+      x: x,
+      y: y
     }
   }
      

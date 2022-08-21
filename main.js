@@ -1,13 +1,10 @@
 const prompt = require("prompt-sync")({ sigint: true });
-const Field = require('./classes/Field')
+const Field = require('./Field')
 
 //main
 
-const myField = new Field([
-  ["*", "░", "O"],
-  ["░", "O", "░"],
-  ["░", "^", "░"],
-]);
+const myField = new Field(Field.generateField(5,7,30));
+
 
 while (!myField.isWinner()) {
   console.log(myField._playerCoordinates)
